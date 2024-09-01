@@ -12,3 +12,4 @@ npm i
 npm start
 ```
 ## How to use
+Enter a GitHub username and get some data!
