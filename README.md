@@ -1,4 +1,6 @@
 # github-activity
+
+## Info
 Train back-end skills, here Node.js with TypeScript.  
 Roadmap project link: https://roadmap.sh/projects/github-user-activity
 
