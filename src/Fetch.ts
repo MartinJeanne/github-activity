@@ -1,5 +1,7 @@
+import BadRequestError from "./error/BadRequestError";
+import GitHubTypeError from "./error/GitHubTypeError";
 import UserNotFoundError from "./error/UserNotFoundError";
-import { GitHubEvent, isGitHubEventArray } from "./GitHubEventUtils";
+import { GitHubEvent, GitHubEventType, isGitHubEventArray } from "./GitHubEventUtils";
 
 export default class Fetch {
     private username: string;
@@ -14,13 +16,13 @@ export default class Fetch {
         const data = await fetch(this.url)
             .then(res => {
                 if (res.ok) return res.json();
-                else if (res.status === 404) {
-                    throw new UserNotFoundError(this.username);
-                }
+                else if (res.status === 404) throw new UserNotFoundError(this.username);
+                else if (res.status === 400) throw new BadRequestError(this.username);
+                else throw new Error(`${res}`);
             });
 
         if (!isGitHubEventArray(data)) {
-            throw new Error('Not GitHubEvent');
+            throw new GitHubTypeError(typeof GitHubEventType);
         }
         return data;
     }

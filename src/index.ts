@@ -1,5 +1,4 @@
 import CLI from "./CLI";
-import UserNotFoundError from "./error/UserNotFoundError";
 import Fetch from "./Fetch";
 import { GitHubEventType, isGitHubEventType } from "./GitHubEventUtils";
 
@@ -9,10 +8,9 @@ const onNewLine = async (line: string) => {
     try {
         eventsRaw = await fetch.findAll();
     } catch (error) {
-        if (error instanceof UserNotFoundError) {
+        if (error instanceof Error) 
             return console.error(error.message);
-        }
-        else console.error(error);
+        return console.error(error);
     }
 
     console.log(`${line}:`);
