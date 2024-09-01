@@ -1,6 +1,6 @@
-import { GitHubEvent, isGitHubEventArray } from "./GitHubEvent";
+import { GitHubEvent, isGitHubEventArray } from "./GitHubEventUtils";
 
-export default class FetchEvent {
+export default class Fetch {
     url: string;
 
     constructor(username: string) {

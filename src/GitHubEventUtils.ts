@@ -1,6 +1,6 @@
 export interface GitHubEvent {
     id: string;
-    type: string;
+    type: GitHubEventType;
     actor: {
         id: number;
         login: string;
@@ -21,16 +21,44 @@ export interface GitHubEvent {
         url: string;
         avatar_url: string;
     };
-    payload: object;
+    payload: any;
     public: boolean;
     created_at: string;
 };
+
+export enum GitHubEventType {
+    CheckRun = "CheckRunEvent",
+    CheckSuite = "CheckSuiteEvent",
+    CommitComment = "CommitCommentEvent",
+    Create = "CreateEvent",
+    Delete = "DeleteEvent",
+    Deployment = "DeploymentEvent",
+    DeploymentStatus = "DeploymentStatusEvent",
+    Fork = "ForkEvent",
+    Gollum = "GollumEvent",
+    IssueComment = "IssueCommentEvent",
+    Issues = "IssuesEvent",
+    Label = "LabelEvent",
+    Member = "MemberEvent",
+    Membership = "MembershipEvent",
+    Milestone = "MilestoneEvent",
+    Public = "PublicEvent",
+    PullRequest = "PullRequestEvent",
+    PullRequestReview = "PullRequestReviewEvent",
+    PullRequestReviewComment = "PullRequestReviewCommentEvent",
+    Push = "PushEvent",
+    Release = "ReleaseEvent",
+    Repository = "RepositoryEvent",
+    Status = "StatusEvent",
+    Watch = "WatchEvent"
+}
+
 
 function isGitHubEvent(event: any): event is GitHubEvent {
     return (
         typeof event === 'object' &&
         typeof event.id === 'string' &&
-        typeof event.type === 'string' &&
+        isGitHubEventType(event.type) &&
         typeof event.actor === 'object' &&
         typeof event.actor.id === 'number' &&
         typeof event.actor.login === 'string' &&
@@ -52,6 +80,10 @@ function isGitHubEvent(event: any): event is GitHubEvent {
         typeof event.public === 'boolean' &&
         typeof event.created_at === 'string'
     );
+}
+
+export function isGitHubEventType(type: any): type is GitHubEventType {
+    return Object.values(GitHubEventType).includes(type);
 }
 
 export function isGitHubEventArray(events: any[]): events is GitHubEvent[] {
