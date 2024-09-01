@@ -12,4 +12,5 @@ npm i
 npm start
 ```
 ## How to use
-Enter a GitHub username and get some data!
+Enter a GitHub username and get some data!  
+Data is sorted by event type.
