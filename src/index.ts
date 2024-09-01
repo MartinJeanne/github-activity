@@ -1,11 +1,21 @@
-console.log('hello world');
-const userUrl = 'https://api.github.com/users/MartinJeanne/events'
+import CLI from "./CLI";
+import GithubEventRepository from "./GithubEventRepository";
 
-async function fetchGitHubActivity() {
-    const data = await fetch(userUrl)
-        .then(json => json.json())
-        .catch(console.error);
-    console.log(data);
+const onNewLine = async (line: string) => {
+    //const fetch = new FetchEvent(line);
+    //const events = await fetch.findAll();
+
+    const eventRepo = new GithubEventRepository();
+    const events = await eventRepo.findAll();
+
+    const results = Object.groupBy(events, ({ type }) => type);
+    for (const key in results) {
+        if (!results[key]) continue;
+        console.log(`${key} ${results[key].length}`);
+    }
 }
 
-fetchGitHubActivity();
+const cli = new CLI();
+cli.onLineListener(onNewLine);
+cli.onCloseListener(() => console.log('Tchuss!'));
+cli.start(() => console.log('Type you GitHub username and get info!'));
