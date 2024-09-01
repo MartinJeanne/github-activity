@@ -1,13 +1,24 @@
 import CLI from "./CLI";
+import UserNotFoundError from "./error/UserNotFoundError";
 import Fetch from "./Fetch";
 import { GitHubEventType, isGitHubEventType } from "./GitHubEventUtils";
 
 const onNewLine = async (line: string) => {
     const fetch = new Fetch(line);
-    const eventsNotSorted = await fetch.findAll();
+    let eventsRaw;
+    try {
+        eventsRaw = await fetch.findAll();
+    } catch (error) {
+        if (error instanceof UserNotFoundError) {
+            return console.error(error.message);
+        }
+        else console.error(error);
+    }
 
     console.log(`${line}:`);
-    const events = Object.groupBy(eventsNotSorted, ({ type }) => type);
+    if (!eventsRaw || eventsRaw.length === 0) return console.log('No event.');
+
+    const events = Object.groupBy(eventsRaw, ({ type }) => type);
     for (const key in events) {
         if (!isGitHubEventType(key) || !events[key]) continue;
 
