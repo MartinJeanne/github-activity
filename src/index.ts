@@ -8,7 +8,7 @@ const onNewLine = async (line: string) => {
     try {
         eventsRaw = await fetch.findAll();
     } catch (error) {
-        if (error instanceof Error) 
+        if (error instanceof Error)
             return console.error(error.message);
         return console.error(error);
     }
@@ -36,7 +36,7 @@ const onNewLine = async (line: string) => {
             case GitHubEventType.Watch: {
                 console.log(`- ${GitHubEventType.Watch}`);
                 events[key].forEach((evt) => {
-                    console.log(`   - Starred ${evt.repo.name}`)
+                    console.log(`   - Starred repository ${evt.repo.name}`)
                 });
                 break;
             }
@@ -109,7 +109,6 @@ const onNewLine = async (line: string) => {
 
             default:
                 break;
-
         }
     }
 }
